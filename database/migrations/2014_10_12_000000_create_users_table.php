@@ -21,10 +21,6 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['user', 'admin', 'petugas', 'superadmin']);
-            // region_id sebagai foreign key
-            // $table->foreignId('region_id')->constrained('regions')->onDelete('cascade');
-            // $table->string('profile_picture')->nullable();
-            // $table->rememberToken();
             $table->timestamps();
         });
     }

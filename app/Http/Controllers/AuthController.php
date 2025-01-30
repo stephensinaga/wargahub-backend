@@ -57,4 +57,32 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Successfully logged out']);
     }
+
+    public function loginAdmin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return back()->withErrors(['error' => 'Email atau password salah']);
+        }
+
+        $user = Auth::user();
+
+        // Pastikan hanya admin atau superadmin yang bisa login
+        if (!in_array($user->role, ['admin', 'superadmin'])) {
+            Auth::logout();
+            return back()->withErrors(['error' => 'Akses ditolak']);
+        }
+
+        return redirect()->route('auth.login');
+    }
+
+    public function logoutAdmin()
+    {
+        Auth::logout();
+        return redirect()->route('admin.login');
+    }
 }
