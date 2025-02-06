@@ -39,7 +39,7 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                   </div>
-                  <form action="{{ route('login.aksi') }}" method="POST" class="user">
+                  <form action="{{ route('login.action') }}" method="POST" class="user">
                     @csrf
 										@if ($errors->any())
 										<div class="alert alert-danger">
@@ -51,10 +51,10 @@
 										</div>
 										@endif
                     <div class="form-group">
-                      <input name="email" type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                        <input name="email" type="email" class="form-control form-control-user" placeholder="Enter Email Address...">
                     </div>
                     <div class="form-group">
-                      <input name="password" type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                        <input name="password" type="password" class="form-control form-control-user" placeholder="Password">
                     </div>
                     <div class="form-group">
                       <div class="custom-control custom-checkbox small">
@@ -66,9 +66,6 @@
                     <button type="submit" class="btn btn-primary btn-block btn-user">Login</button>
                   </form>
                   <hr>
-                  <div class="text-center">
-                    <a class="small" href="{{ route('register') }}">Create an Account!</a>
-                  </div>
                 </div>
               </div>
             </div>

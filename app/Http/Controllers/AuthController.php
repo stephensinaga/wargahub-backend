@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function registerApi(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -20,45 +21,70 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
+            'role' => 'user', // Default role untuk pengguna API
         ]);
 
         $token = $user->createToken('authToken')->plainTextToken;
 
         return response()->json([
+            'message' => 'User registered successfully!',
             'user' => $user,
             'token' => $token,
         ], 201);
     }
 
-    public function login(Request $request)
+    // ✅ API: Login (hanya untuk "user" dan "petugas")
+    public function loginApi(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
+        //  Periksa apakah email terdaftar
+        if (!User::where('email', $request->email)->exists()) {
+            return response()->json(['message' => 'Email tidak terdaftar'], 404);
+        }
+
+        //  Cek apakah login berhasil
         if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return response()->json(['message' => 'Email atau password salah'], 401);
         }
 
         $user = Auth::user();
+
+        //  Hanya "user" dan "petugas" yang boleh login via API
+        if (!in_array($user->role, ['user', 'petugas'])) {
+            Auth::logout();
+            return response()->json(['message' => 'Akses ditolak'], 403);
+        }
+
         $token = $user->createToken('authToken')->plainTextToken;
 
         return response()->json([
+            'message' => 'Login successful!',
             'user' => $user,
             'token' => $token,
-        ]);
+        ], 200);
     }
 
-    public function logout(Request $request)
+    // ✅ API: Logout (Hapus Semua Token)
+    public function logoutApi(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        auth()->user()->currentAccessToken()->delete();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'Successfully logged out'], 200);
     }
 
-    public function loginAdmin(Request $request)
+    // Web: Menampilkan halaman login
+    public function loginview()
+    {
+        return view('auth/login');
+    }
+
+    // Web: Login hanya untuk "admin" dan "superadmin"
+    public function loginWeb(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
@@ -71,18 +97,19 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
-        // Pastikan hanya admin atau superadmin yang bisa login
         if (!in_array($user->role, ['admin', 'superadmin'])) {
             Auth::logout();
             return back()->withErrors(['error' => 'Akses ditolak']);
         }
 
-        return redirect()->route('auth.login');
+
+        return redirect()->route('Dashboard');
     }
 
-    public function logoutAdmin()
+    // Web: Logout Admin
+    public function logoutWeb()
     {
         Auth::logout();
-        return redirect()->route('admin.login');
+        return redirect()->route('/');
     }
 }
