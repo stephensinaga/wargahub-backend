@@ -15,6 +15,16 @@ class CreateReportsTable extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('category'); // Kategori laporan
+            $table->string('photo_1'); // Foto wajib
+            $table->string('photo_2');
+            $table->string('photo_3');
+            $table->text('description'); // Keterangan
+            $table->string('latitude'); // Lokasi
+            $table->string('longitude');
+            $table->string('address');
+            $table->enum('status', ['pending', 'in_progress', 'accepted', 'rejected'])->default('pending');
             $table->timestamps();
         });
     }
