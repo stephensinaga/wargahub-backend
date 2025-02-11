@@ -3,6 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\LaporanController;
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +29,5 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [AdminController::class, 'Dashboard'])->name('Dashboard');
 });
+
+Route::resource('laporan', LaporanController::class);
