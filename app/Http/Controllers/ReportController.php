@@ -10,7 +10,13 @@ use App\Notifications\ReportStatusNotification;
 
 class ReportController extends Controller
 {
-    // Mengirim laporan
+    // Menampilkan form untuk membuat laporan baru
+    public function create()
+    {
+        return view('laporan.create');
+    }
+
+    // Menyimpan laporan yang dikirim oleh user
     public function store(Request $request)
     {
         $request->validate([
@@ -24,7 +30,7 @@ class ReportController extends Controller
             'address' => 'required|string',
         ]);
 
-        // Simpan foto
+        // Simpan foto ke storage
         $photo1 = $request->file('photo_1')->store('reports', 'public');
         $photo2 = $request->file('photo_2')->store('reports', 'public');
         $photo3 = $request->file('photo_3')->store('reports', 'public');
@@ -42,13 +48,33 @@ class ReportController extends Controller
             'status' => 'pending',
         ]);
 
-        return response()->json(['message' => 'Laporan berhasil dikirim', 'report' => $report], 201);
+        return redirect()->route('laporan.index')->with('success', 'Laporan berhasil dikirim.');
+    }
+
+    // Menampilkan semua laporan
+    public function index()
+    {
+        $laporans = Report::latest()->get();
+        return view('laporan.index', compact('laporans'));
+    }
+
+    // Menampilkan detail laporan
+    public function show($id)
+    {
+        $report = Report::findOrFail($id);
+        return view('laporan.show', compact('report'));
+    }
+
+    // Menampilkan form edit laporan
+    public function edit($id)
+    {
+        $laporan = Report::findOrFail($id);
+        return view('laporan.edit', compact('laporan'));
     }
 
     // Admin mengubah status laporan
     public function updateStatus(Request $request, $id)
     {
-        // Cek apakah user adalah admin
         if (Auth::user()->role !== 'admin') {
             return response()->json(['message' => 'Anda tidak memiliki izin'], 403);
         }
@@ -64,19 +90,5 @@ class ReportController extends Controller
         $report->user->notify(new ReportStatusNotification($request->status, $report));
 
         return response()->json(['message' => 'Status laporan diperbarui', 'report' => $report]);
-    }
-
-    // Menampilkan semua laporan
-    public function index()
-    {
-        $reports = Report::with('user')->latest()->get();
-        return response()->json($reports);
-        $reports = Report::latest()->get();
-        return view('laporan.index', compact('reports'));
-    }
-    public function show($id)
-    {
-        $report = Report::findOrFail($id);
-        return view('laporan.show', compact('report'));
     }
 }

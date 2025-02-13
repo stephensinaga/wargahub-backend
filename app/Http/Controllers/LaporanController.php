@@ -21,18 +21,30 @@ class LaporanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'judul' => 'required',
-            'deskripsi' => 'required',
-            'tanggal' => 'required|date',
+            'judul' => 'required|string|max:255',
+            'category' => 'required|string|max:255',
+            'photo_1' => 'required|image',
+            'photo_2' => 'required|image',
+            'photo_3' => 'required|image',
+            'description' => 'required|string',
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'address' => 'required|string|max:255',
         ]);
 
-        Laporan::create($request->all());
-        return redirect()->route('laporan.index')->with('success', 'Laporan berhasil ditambahkan.');
-    }
+        Laporan::create([
+            'judul' => $request->judul,
+            'category' => $request->category,
+            'photo_1' => $request->file('photo_1')->store('laporan_photos'),
+            'photo_2' => $request->file('photo_2')->store('laporan_photos'),
+            'photo_3' => $request->file('photo_3')->store('laporan_photos'),
+            'description' => $request->description,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+            'address' => $request->address,
+        ]);
 
-    public function show(Laporan $laporan)
-    {
-        return view('laporan.show', compact('laporan'));
+        return redirect()->route('laporan.index')->with('success', 'Laporan berhasil dibuat!');
     }
 
     public function edit(Laporan $laporan)
@@ -52,9 +64,11 @@ class LaporanController extends Controller
         return redirect()->route('laporan.index')->with('success', 'Laporan berhasil diperbarui.');
     }
 
-    public function destroy(Laporan $laporan)
+    public function destroy($id)
     {
+        $laporan = Laporan::findOrFail($id);
         $laporan->delete();
-        return redirect()->route('laporan.index')->with('success', 'Laporan berhasil dihapus.');
+
+        return redirect()->route('laporan.index')->with('success', 'Laporan berhasil dihapus');
     }
 }

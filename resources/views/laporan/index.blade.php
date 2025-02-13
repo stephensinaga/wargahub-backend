@@ -1,49 +1,55 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="id">
 
-@section('content')
-<div class="container-fluid">
-    <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800">Laporan Masuk</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Laporan</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
 
-    <!-- Tabel Laporan -->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Daftar Laporan</h6>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Judul</th>
-                            <th>Deskripsi</th>
-                            <th>Tanggal</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($laporans as $laporan)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $laporan->judul }}</td>
-                            <td>{{ $laporan->deskripsi }}</td>
-                            <td>{{ $laporan->tanggal }}</td>
-                            <td>
-                                <a href="{{ route('laporan.show', $laporan->id) }}" class="btn btn-info btn-sm">Detail</a>
-                                <a href="{{ route('laporan.edit', $laporan->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                <form action="{{ route('laporan.destroy', $laporan->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin?')">Hapus</button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+<body>
+    <div class="container mt-4">
+        <h2>Daftar Laporan</h2>
+        <a href="{{ route('laporan.create') }}" class="btn btn-primary mb-3">Tambah Laporan</a>
+
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
             </div>
-        </div>
+        @endif
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Judul</th>
+                    <th>Deskripsi</th>
+                    <th>Tanggal</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($laporans as $index => $laporan)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $laporan->judul }}</td>
+                        <td>{{ $laporan->deskripsi }}</td>
+                        <td>{{ $laporan->tanggal }}</td>
+                        <td>
+                            <a href="{{ route('laporan.edit', $laporan->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="{{ route('laporan.destroy', $laporan->id) }}" method="POST"
+                                style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
-</div>
-@endsection
+</body>
+
+</html>

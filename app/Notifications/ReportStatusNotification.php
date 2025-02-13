@@ -11,8 +11,7 @@ class ReportStatusNotification extends Notification
 {
     use Queueable;
 
-    private $status;
-    private $report;
+    public $status, $report;
 
     public function __construct($status, $report)
     {
@@ -22,14 +21,24 @@ class ReportStatusNotification extends Notification
 
     public function via($notifiable)
     {
-        return ['database', 'mail'];
+        return ['mail', 'database'];
+    }
+
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+            ->subject('Status Laporan Anda Diperbarui')
+            ->line('Status laporan Anda telah diperbarui menjadi: ' . ucfirst($this->status))
+            ->action('Lihat Laporan', url('/laporan/' . $this->report->id))
+            ->line('Terima kasih telah melaporkan!');
     }
 
     public function toArray($notifiable)
     {
         return [
-            'message' => "Laporan Anda telah $this->status",
-            'report' => $this->report->id,
+            'report_id' => $this->report->id,
+            'status' => $this->status,
+            'message' => 'Status laporan Anda telah diperbarui menjadi: ' . ucfirst($this->status),
         ];
     }
 }

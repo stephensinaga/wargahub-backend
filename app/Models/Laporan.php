@@ -8,4 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Laporan extends Model
 {
     use HasFactory;
+
+    protected $table = 'laporans'; // Nama tabel dalam database
+
+    protected $fillable = [
+        'judul',
+        'category',
+        'photo_1',
+        'photo_2',
+        'photo_3',
+        'description',
+        'latitude',
+        'longitude',
+        'address'
+    ];
 }
