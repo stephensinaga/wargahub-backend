@@ -42,6 +42,12 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::resource('laporan', LaporanController::class);
+Route::get('/laporan/proses', [LaporanController::class, 'proses'])->name('laporan.proses');
+Route::get('/laporan/diterima', [LaporanController::class, 'diterima'])->name('laporan.diterima');
+Route::get('/laporan/ditolak', [LaporanController::class, 'ditolak'])->name('laporan.ditolak');
+Route::get('/laporan/masuk', [LaporanController::class, 'masuk'])->name('laporan.masuk');
+Route::get('/laporan/{id}', [LaporanController::class, 'show'])->name('laporan.show');
+
 Route::get('/laporan/create', [ReportController::class, 'create'])->name('laporan.create');
 Route::get('/laporan', [ReportController::class, 'index'])->name('laporan.index');
 Route::get('/laporan/{id}', [ReportController::class, 'show'])->name('laporan.show');

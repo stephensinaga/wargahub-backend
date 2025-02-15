@@ -9,8 +9,6 @@ class Laporan extends Model
 {
     use HasFactory;
 
-    protected $table = 'laporans'; // Nama tabel dalam database
-
     protected $fillable = [
         'judul',
         'category',
@@ -20,6 +18,7 @@ class Laporan extends Model
         'description',
         'latitude',
         'longitude',
-        'address'
+        'address',
+        'tanggal',
     ];
 }

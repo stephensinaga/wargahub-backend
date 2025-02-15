@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Laporan;
 use Illuminate\Http\Request;
+use App\Models\Laporan;
 
 class LaporanController extends Controller
 {
@@ -20,55 +20,69 @@ class LaporanController extends Controller
 
     public function store(Request $request)
     {
+        // Validasi input
         $request->validate([
-            'judul' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
-            'photo_1' => 'required|image',
-            'photo_2' => 'required|image',
-            'photo_3' => 'required|image',
+            'judul' => 'required|string',
+            'category' => 'required|string',
+            'photo_1' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo_2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo_3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'description' => 'required|string',
-            'latitude' => 'required',
-            'longitude' => 'required',
-            'address' => 'required|string|max:255',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'address' => 'required|string',
+            'tanggal' => 'required|date',
         ]);
 
+        // Simpan gambar jika ada
+        $photo_1 = $request->file('photo_1') ? $request->file('photo_1')->store('uploads/laporan', 'public') : null;
+        $photo_2 = $request->file('photo_2') ? $request->file('photo_2')->store('uploads/laporan', 'public') : null;
+        $photo_3 = $request->file('photo_3') ? $request->file('photo_3')->store('uploads/laporan', 'public') : null;
+
+        // Simpan data ke database
         Laporan::create([
             'judul' => $request->judul,
             'category' => $request->category,
-            'photo_1' => $request->file('photo_1')->store('laporan_photos'),
-            'photo_2' => $request->file('photo_2')->store('laporan_photos'),
-            'photo_3' => $request->file('photo_3')->store('laporan_photos'),
+            'photo_1' => $photo_1,
+            'photo_2' => $photo_2,
+            'photo_3' => $photo_3,
             'description' => $request->description,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
             'address' => $request->address,
+            'tanggal' => $request->tanggal,
         ]);
 
-        return redirect()->route('laporan.index')->with('success', 'Laporan berhasil dibuat!');
+        // Redirect dengan pesan sukses
+        return redirect()->route('laporan.index')->with('success', 'Laporan berhasil ditambahkan!');
+    }
+    public function proses()
+    {
+        return view('laporan.proses');
     }
 
-    public function edit(Laporan $laporan)
+    public function diterima()
     {
-        return view('laporan.edit', compact('laporan'));
+        return view('laporan.diterima');
     }
 
-    public function update(Request $request, Laporan $laporan)
+    public function ditolak()
     {
-        $request->validate([
-            'judul' => 'required',
-            'deskripsi' => 'required',
-            'tanggal' => 'required|date',
-        ]);
-
-        $laporan->update($request->all());
-        return redirect()->route('laporan.index')->with('success', 'Laporan berhasil diperbarui.');
+        return view('laporan.ditolak');
     }
 
-    public function destroy($id)
+    public function masuk()
     {
-        $laporan = Laporan::findOrFail($id);
-        $laporan->delete();
+        return view('laporan.masuk');
+    }
+    public function show($id)
+    {
+        $laporan = Laporan::find($id);
 
-        return redirect()->route('laporan.index')->with('success', 'Laporan berhasil dihapus');
+        if (!$laporan) {
+            return abort(404); // Jika tidak ditemukan, tampilkan 404
+        }
+
+        return view('laporan.show', compact('laporan'));
     }
 }

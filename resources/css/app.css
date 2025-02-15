@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .hover-card {
+        @apply transition-transform duration-200 ease-in-out;
+    }
+
+    .hover-card:hover {
+        @apply scale-105;
+    }
+}

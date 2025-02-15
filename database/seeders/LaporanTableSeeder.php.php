@@ -13,14 +13,14 @@ class LaporanTableSeeder extends Seeder
         DB::table('laporans')->insert([
             [
                 'judul' => 'Jalan Rusak',
-                'deskripsi' => 'Jalan utama rusak parah akibat banjir.',
+                'description' => 'Jalan utama rusak parah akibat banjir.',
                 'tanggal' => Carbon::now()->subDays(3),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'judul' => 'Lampu Jalan Mati',
-                'deskripsi' => 'Beberapa lampu jalan di perumahan padam.',
+                'description' => 'Beberapa lampu jalan di perumahan padam.',
                 'tanggal' => Carbon::now()->subDays(2),
                 'created_at' => now(),
                 'updated_at' => now(),

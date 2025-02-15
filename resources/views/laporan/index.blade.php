@@ -11,39 +11,34 @@
 <body>
     <div class="container mt-4">
         <h2>Daftar Laporan</h2>
-        <a href="{{ route('laporan.create') }}" class="btn btn-primary mb-3">Tambah Laporan</a>
 
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-        <table class="table table-bordered">
+        <!-- Tombol Tambah Laporan -->
+        <a href="{{ route('laporan.create') }}" class="btn btn-success mb-3">Tambah Laporan</a>
+
+        <table class="table">
             <thead>
                 <tr>
-                    <th>No</th>
                     <th>Judul</th>
+                    <th>Kategori</th>
                     <th>Deskripsi</th>
-                    <th>Tanggal</th>
-                    <th>Aksi</th>
+                    <th>Alamat</th>
+                    <th>Foto</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($laporans as $index => $laporan)
+                @foreach ($laporans as $laporan)
                     <tr>
-                        <td>{{ $index + 1 }}</td>
                         <td>{{ $laporan->judul }}</td>
-                        <td>{{ $laporan->deskripsi }}</td>
-                        <td>{{ $laporan->tanggal }}</td>
+                        <td>{{ $laporan->category }}</td>
+                        <td>{{ $laporan->deskripsi }}</td> <!-- Sesuaikan dengan kolom DB -->
+                        <td>{{ $laporan->address }}</td>
                         <td>
-                            <a href="{{ route('laporan.edit', $laporan->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('laporan.destroy', $laporan->id) }}" method="POST"
-                                style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
-                            </form>
+                            <a href="{{ route('laporan.show', $laporan->id) }}" class="btn btn-primary">Lihat Detail</a>
+                            @if ($laporan->photo_1)
+                                <img src="{{ asset('storage/' . $laporan->photo_1) }}" width="100">
+                            @else
+                                <span class="text-muted">Tidak ada foto</span>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
