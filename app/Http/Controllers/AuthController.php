@@ -102,7 +102,6 @@ class AuthController extends Controller
             return back()->withErrors(['error' => 'Akses ditolak']);
         }
 
-
         return redirect()->route('Dashboard');
     }
 

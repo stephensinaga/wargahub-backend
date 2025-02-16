@@ -20,41 +20,33 @@ class LaporanController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
             'judul' => 'required|string',
             'category' => 'required|string',
-            'photo_1' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'photo_2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'photo_3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'description' => 'required|string',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
+            'photo_1' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photo_2' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photo_3' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'required|string', // Pastikan ini ada
+            'latitude' => 'required',
+            'longitude' => 'required',
             'address' => 'required|string',
             'tanggal' => 'required|date',
         ]);
 
-        // Simpan gambar jika ada
-        $photo_1 = $request->file('photo_1') ? $request->file('photo_1')->store('uploads/laporan', 'public') : null;
-        $photo_2 = $request->file('photo_2') ? $request->file('photo_2')->store('uploads/laporan', 'public') : null;
-        $photo_3 = $request->file('photo_3') ? $request->file('photo_3')->store('uploads/laporan', 'public') : null;
-
-        // Simpan data ke database
         Laporan::create([
             'judul' => $request->judul,
             'category' => $request->category,
-            'photo_1' => $photo_1,
-            'photo_2' => $photo_2,
-            'photo_3' => $photo_3,
-            'description' => $request->description,
+            'photo_1' => $request->file('photo_1')->store('laporan'),
+            'photo_2' => $request->file('photo_2')->store('laporan'),
+            'photo_3' => $request->file('photo_3')->store('laporan'),
+            'description' => $request->description, // Pastikan ini ada
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
             'address' => $request->address,
             'tanggal' => $request->tanggal,
         ]);
 
-        // Redirect dengan pesan sukses
-        return redirect()->route('laporan.index')->with('success', 'Laporan berhasil ditambahkan!');
+        return redirect()->route('laporan.index')->with('success', 'Laporan berhasil disimpan');
     }
     public function proses()
     {

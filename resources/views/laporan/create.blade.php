@@ -98,6 +98,7 @@
             <label for="description">Deskripsi:</label>
             <textarea name="description" required></textarea>
 
+
             <label for="latitude">Latitude:</label>
             <input type="text" name="latitude" required>
 
@@ -113,6 +114,18 @@
             <button type="submit">Simpan Laporan</button>
         </form>
     </div>
+    <script>
+        document.querySelector("form").addEventListener("submit", function(event) {
+            let photo1 = document.querySelector("input[name='photo_1']").files.length;
+            let photo2 = document.querySelector("input[name='photo_2']").files.length;
+            let photo3 = document.querySelector("input[name='photo_3']").files.length;
+
+            if (photo1 === 0 || photo2 === 0 || photo3 === 0) {
+                alert("Semua foto wajib diisi!");
+                event.preventDefault();
+            }
+        });
+    </script>
 </body>
 
 </html>

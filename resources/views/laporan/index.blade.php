@@ -1,50 +1,44 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Laporan</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-</head>
+@section('title', 'Daftar Laporan')
 
-<body>
+@section('contents')
     <div class="container mt-4">
         <h2>Daftar Laporan</h2>
-
-        <!-- Tombol Tambah Laporan -->
-        <a href="{{ route('laporan.create') }}" class="btn btn-success mb-3">Tambah Laporan</a>
-
-        <table class="table">
-            <thead>
+        <a href="{{ route('laporan.create') }}" class="btn btn-primary mb-3">Buat Laporan Baru</a>
+        <table class="table table-bordered">
+            <thead class="table-dark">
                 <tr>
+                    <th>No</th>
                     <th>Judul</th>
                     <th>Kategori</th>
-                    <th>Deskripsi</th>
                     <th>Alamat</th>
-                    <th>Foto</th>
+                    <th>Tanggal</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($laporans as $laporan)
+                @foreach ($laporans as $key => $laporan)
                     <tr>
+                        <td>{{ $key + 1 }}</td>
                         <td>{{ $laporan->judul }}</td>
                         <td>{{ $laporan->category }}</td>
-                        <td>{{ $laporan->deskripsi }}</td> <!-- Sesuaikan dengan kolom DB -->
                         <td>{{ $laporan->address }}</td>
+                        <td>{{ $laporan->tanggal }}</td>
                         <td>
-                            <a href="{{ route('laporan.show', $laporan->id) }}" class="btn btn-primary">Lihat Detail</a>
-                            @if ($laporan->photo_1)
-                                <img src="{{ asset('storage/' . $laporan->photo_1) }}" width="100">
-                            @else
-                                <span class="text-muted">Tidak ada foto</span>
-                            @endif
+                            <a href="{{ route('laporan.show', $laporan->id) }}" class="btn btn-info btn-sm">Lihat</a>
+                            <a href="{{ route('laporan.edit', $laporan->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="{{ route('laporan.destroy', $laporan->id) }}" method="POST"
+                                style="display:inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Yakin ingin menghapus laporan ini?')">Hapus</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
-</body>
-
-</html>
+@endsection

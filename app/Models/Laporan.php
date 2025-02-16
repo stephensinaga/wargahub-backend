@@ -19,6 +19,6 @@ class Laporan extends Model
         'latitude',
         'longitude',
         'address',
-        'tanggal',
+        'tanggal'
     ];
 }

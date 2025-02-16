@@ -10,11 +10,11 @@ return new class extends Migration {
         Schema::create('laporans', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
-            $table->string('category');
+            $table->string('category')->after('judul');
             $table->string('photo_1')->nullable();
             $table->string('photo_2')->nullable();
             $table->string('photo_3')->nullable();
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->decimal('latitude', 10, 7);
             $table->decimal('longitude', 10, 7);
             $table->string('address');

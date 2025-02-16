@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SuperadminController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\JenisPengaduanController;
@@ -62,3 +63,7 @@ Route::post('/kecamatan', [KecamatanController::class, 'store'])->name('kecamata
 Route::resource('kota', KotaController::class);
 Route::resource('provinsi', ProvinsiController::class);
 Route::resource('petugas', PetugasController::class);
+
+Route::get('/superadmin/admin/create', [SuperadminController::class, 'createAdmin'])->name('superadmin.createAdmin');
+Route::post('/superadmin/admin/store', [SuperadminController::class, 'storeAdmin'])->name('superadmin.storeAdmin');
+Route::get('/superadmin/laporan', [SuperadminController::class, 'laporan'])->name('superadmin.laporan');

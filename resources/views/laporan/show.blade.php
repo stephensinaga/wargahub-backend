@@ -3,12 +3,22 @@
 @section('title', 'Detail Laporan')
 
 @section('contents')
-    <div class="container">
-        <h1>Detail Laporan</h1>
-        <p><strong>ID:</strong> {{ $laporan->id }}</p>
-        <p><strong>Judul:</strong> {{ $laporan->judul }}</p>
-        <p><strong>Deskripsi:</strong> {{ $laporan->deskripsi }}</p>
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Detail Laporan</h4>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ $laporan->judul }}</h5>
+                <p class="card-text"><strong>Kategori:</strong> {{ $laporan->category }}</p>
+                <p class="card-text"><strong>Wilayah:</strong> {{ $laporan->wilayah }}</p>
+                <p class="card-text"><strong>Tanggal:</strong> {{ $laporan->tanggal }}</p>
+                <p class="card-text"><strong>Deskripsi:</strong></p>
+                <p>{{ $laporan->deskripsi }}</p>
 
-        <a href="{{ route('laporan.index') }}" class="btn btn-secondary">Kembali</a>
+                <!-- Tombol Kembali -->
+                <a href="{{ route('superadmin.laporan') }}" class="btn btn-secondary">Kembali</a>
+            </div>
+        </div>
     </div>
 @endsection
