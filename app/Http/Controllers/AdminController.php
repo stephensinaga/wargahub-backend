@@ -10,6 +10,6 @@ class AdminController extends Controller
     public function Dashboard()
     {
         $reports = Report::latest()->take(10)->get(); // Ambil 10 laporan terbaru
-        return view('dashboard', compact('reports'));
+        return view('admin.dashboard', compact('reports'));
     }
 }

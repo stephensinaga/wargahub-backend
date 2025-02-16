@@ -11,6 +11,8 @@ use App\Http\Controllers\KecamatanController;
 use App\Http\Controllers\KotaController;
 use App\Http\Controllers\ProvinsiController;
 use App\Http\Controllers\PetugasController;
+use App\Http\Controllers\DashboardController;
+
 
 
 
@@ -41,6 +43,27 @@ Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [AdminController::class, 'Dashboard'])->name('Dashboard');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        if (auth()->user()->role == 'superadmin') {
+            return redirect()->route('superadmin.dashboard');
+        } elseif (auth()->user()->role == 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+        return abort(403); // Jika role tidak dikenal
+    })->name('dashboard');
+
+    // Dashboard Superadmin
+    Route::get('/superadmin/dashboard', [SuperadminController::class, 'Dashboard'])->name('superadmin.dashboard');
+
+    // Dashboard Admin
+    Route::get('/admin/dashboard', [AdminController::class, 'Dashboard'])->name('admin.dashboard');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('Dashboard');
+
 
 Route::resource('laporan', LaporanController::class);
 Route::get('/laporan/proses', [LaporanController::class, 'proses'])->name('laporan.proses');
@@ -67,3 +90,5 @@ Route::resource('petugas', PetugasController::class);
 Route::get('/superadmin/admin/create', [SuperadminController::class, 'createAdmin'])->name('superadmin.createAdmin');
 Route::post('/superadmin/admin/store', [SuperadminController::class, 'storeAdmin'])->name('superadmin.storeAdmin');
 Route::get('/superadmin/laporan', [SuperadminController::class, 'laporan'])->name('superadmin.laporan');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('Dashboard');

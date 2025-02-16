@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Hash;
 
 class SuperadminController extends Controller
 {
+    public function Dashboard()
+    {
+        $laporans = Laporan::all(); // Mengambil semua laporan
+        return view('superadmin.dashboard', compact('laporans'));
+    }
     // Menampilkan halaman tambah admin
     public function createAdmin()
     {
