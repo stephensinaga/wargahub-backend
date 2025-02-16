@@ -20,6 +20,9 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
 
+    <!-- Custom styles tambahan -->
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+
 </head>
 
 <body class="bg-gradient-primary">
@@ -39,7 +42,9 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <img src="{{ url('img/logo.png') }}" alt="Logo" class="mb-3"
+                                            style="width: 210px;">
+                                        <h1 class="h4 text-gray-900 mb-4">Welcome To WargaHub</h1>
                                     </div>
                                     <form action="{{ route('login.action') }}" method="POST" class="user">
                                         @csrf

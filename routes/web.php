@@ -66,10 +66,10 @@ Route::get('/dashboard', function () {
 
 
 Route::resource('laporan', LaporanController::class);
-Route::get('/laporan/proses', [LaporanController::class, 'proses'])->name('laporan.proses');
-Route::get('/laporan/diterima', [LaporanController::class, 'diterima'])->name('laporan.diterima');
-Route::get('/laporan/ditolak', [LaporanController::class, 'ditolak'])->name('laporan.ditolak');
-Route::get('/laporan/masuk', [LaporanController::class, 'masuk'])->name('laporan.masuk');
+Route::post('/laporan/proses', [LaporanController::class, 'proses'])->name('laporan.proses');
+Route::post('/laporan/diterima', [LaporanController::class, 'diterima'])->name('laporan.diterima');
+Route::post('/laporan/ditolak', [LaporanController::class, 'ditolak'])->name('laporan.ditolak');
+Route::post('/laporan/masuk', [LaporanController::class, 'masuk'])->name('laporan.masuk');
 Route::get('/laporan/{id}', [LaporanController::class, 'show'])->name('laporan.show');
 
 Route::get('/laporan/create', [ReportController::class, 'create'])->name('laporan.create');

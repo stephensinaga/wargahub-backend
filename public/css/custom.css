@@ -1,0 +1,11 @@
+.bg-login-image {
+    background: url('../img/login-image.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+body {
+    background: url('../img/logo\ \(2\).jpg') no-repeat center center fixed;
+    background-size: cover;
+}
