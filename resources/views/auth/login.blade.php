@@ -43,7 +43,7 @@
                                 <div class="p-5">
                                     <div class="text-center">
                                         <img src="{{ url('img/logo.png') }}" alt="Logo" class="mb-3"
-                                            style="width: 210px;">
+                                            style="width: 150px;">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome To WargaHub</h1>
                                     </div>
                                     <form action="{{ route('login.action') }}" method="POST" class="user">
