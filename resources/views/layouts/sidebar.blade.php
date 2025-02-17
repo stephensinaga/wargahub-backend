@@ -18,13 +18,6 @@
             <span>Dashboard</span>
         </a>
     </li>
-
-    <li class="nav-item">
-        <a class="nav-link">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Barang</span></a>
-    </li>
-
     <li class="nav-item">
         <a class="nav-link" href="{{ route('laporan.index') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
