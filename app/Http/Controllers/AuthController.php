@@ -69,6 +69,13 @@ class AuthController extends Controller
         ], 200);
     }
 
+    public function getUser()
+    {
+        return response()->json([
+            'user' => Auth::user()
+        ]);
+    }
+
     // ✅ API: Logout (Hapus Semua Token)
     public function logoutApi(Request $request)
     {
@@ -112,4 +119,5 @@ class AuthController extends Controller
         Auth::logout();
         return redirect()->route('/');
     }
+
 }
