@@ -13,22 +13,18 @@ class CreatePetugasTable extends Migration
      */
     public function up()
     {
-        Schema::create('petugas', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->enum('level', ['admin', 'operator'])->default('operator');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('petugas')) {
+            Schema::create('petugas', function (Blueprint $table) {
+                $table->id();
+                $table->string('nama');
+                $table->string('email');
+                $table->string('password');
+                $table->enum('level', ['admin', 'operator'])->default('operator');
+                $table->timestamps();
+            });
+        }
     }
 
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('petugas');

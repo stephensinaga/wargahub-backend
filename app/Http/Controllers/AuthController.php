@@ -97,7 +97,7 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
-        if (!in_array($user->role, ['admin', 'superadmin'])) {
+        if (!in_array($user->role, ['admin', 'superadmin','petugas'])) {
             Auth::logout();
             return back()->withErrors(['error' => 'Akses ditolak']);
         }

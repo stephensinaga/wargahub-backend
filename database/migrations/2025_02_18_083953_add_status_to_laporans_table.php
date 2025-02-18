@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddCategoryToLaporansTable extends Migration
+class AddStatusToLaporansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,14 +14,14 @@ class AddCategoryToLaporansTable extends Migration
     public function up()
     {
         Schema::table('laporans', function (Blueprint $table) {
-            $table->string('category')->after('judul'); // Menambah kolom category setelah judul
+            $table->enum('status', ['proses', 'diterima', 'ditolak'])->default('proses');
         });
     }
 
     public function down()
     {
         Schema::table('laporans', function (Blueprint $table) {
-            $table->dropColumn('category');
+            $table->dropColumn('status');
         });
     }
 }

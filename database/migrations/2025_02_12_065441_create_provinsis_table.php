@@ -13,19 +13,15 @@ class CreateProvinsisTable extends Migration
      */
     public function up()
     {
-        Schema::create('provinsis', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('provinsis')) {
+            Schema::create('provinsis', function (Blueprint $table) {
+                $table->id();
+                $table->string('nama');
+                $table->timestamps();
+            });
+        }
     }
 
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('provinsis');

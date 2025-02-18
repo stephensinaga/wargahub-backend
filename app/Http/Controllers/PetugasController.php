@@ -2,74 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Petugas;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use App\Models\Laporan;
 
 class PetugasController extends Controller
 {
     public function index()
     {
-        $petugas = Petugas::all();
-        return view('index_petugas', compact('petugas'));
+        $laporans = Laporan::where('status', '!=', 'pending')->get();
+        return view('petugas.laporan.index', compact('laporans'));
     }
 
-    public function create()
+    public function edit($id)
     {
-        return view('create_petugas');
+        $laporan = Laporan::findOrFail($id);
+        return view('petugas.laporan.edit', compact('laporan'));
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|unique:petugas,email',
-            'password' => 'required|min:6',
-            'level' => 'required|in:admin,operator',
-        ]);
-
-        Petugas::create([
-            'nama' => $request->nama,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'level' => $request->level,
-        ]);
-
-        return redirect()->route('petugas.index')->with('success', 'Petugas berhasil ditambahkan');
-    }
-
-    public function edit(Petugas $petugas)
-    {
-        return view('edit_petugas', compact('petugas'));
-    }
-
-    public function update(Request $request, Petugas $petugas)
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|unique:petugas,email,' . $petugas->id,
-            'level' => 'required|in:admin,operator',
+            'status' => 'required|in:proses,selesai',
         ]);
 
-        $data = [
-            'nama' => $request->nama,
-            'email' => $request->email,
-            'level' => $request->level,
-        ];
+        $laporan = Laporan::findOrFail($id);
+        $laporan->update(['status' => $request->status]);
 
-        if ($request->password) {
-            $request->validate(['password' => 'min:6']);
-            $data['password'] = Hash::make($request->password);
-        }
-
-        $petugas->update($data);
-
-        return redirect()->route('petugas.index')->with('success', 'Petugas berhasil diperbarui');
+        return redirect()->route('petugas.laporan.index')->with('success', 'Status laporan berhasil diperbarui!');
     }
 
-    public function destroy(Petugas $petugas)
+    public function show($id)
     {
-        $petugas->delete();
-        return redirect()->route('petugas.index')->with('success', 'Petugas berhasil dihapus');
+        $laporan = Laporan::findOrFail($id);
+        return view('petugas.laporan.show', compact('laporan'));
     }
 }

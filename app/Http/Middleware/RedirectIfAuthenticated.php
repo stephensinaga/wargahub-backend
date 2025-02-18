@@ -21,7 +21,7 @@ class RedirectIfAuthenticated
     {
         if (Auth::check()) {
             if (Auth::user()->role == 'superadmin') {
-                return redirect()->route('superadmin.dashboard');
+                return redirect()->route('superadmin.laporan');
             } elseif (Auth::user()->role == 'admin') {
                 return redirect()->route('admin.dashboard');
             }

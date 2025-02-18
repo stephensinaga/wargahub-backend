@@ -13,10 +13,7 @@
                 <p class="card-text"><strong>Kategori:</strong> {{ $laporan->category }}</p>
                 <p class="card-text"><strong>Wilayah:</strong> {{ $laporan->wilayah }}</p>
                 <p class="card-text"><strong>Tanggal:</strong> {{ $laporan->tanggal }}</p>
-                <p class="card-text"><strong>Deskripsi:</strong></p>
-                <p>{{ $laporan->deskripsi }}</p>
-
-                <!-- Tombol Kembali -->
+                <p class="card-text"><strong>Deskripsi:</strong>{{ $laporan->description}}</p>
                 <a href="{{ route('superadmin.laporan') }}" class="btn btn-secondary">Kembali</a>
             </div>
         </div>
