@@ -76,6 +76,15 @@ class AuthController extends Controller
         ]);
     }
 
+    public function getProfile()
+    {
+        $user = Auth::user(); // Mendapatkan data user yang sedang login
+        return response()->json([
+            'name' => $user->name,
+            'email' => $user->email,
+        ]);
+    }
+
     // ✅ API: Logout (Hapus Semua Token)
     public function logoutApi(Request $request)
     {

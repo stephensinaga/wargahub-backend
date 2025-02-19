@@ -14,10 +14,7 @@ class Migrate extends Command
     {
         $this->call('migrate:fresh');
 
-        $this->call('db:seed', ['--class' => 'DefaultProduct']);
-        $this->call('db:seed', ['--class' => 'UserTest']);
-        $this->call('db:seed', ['--class' => 'Unit']);
-        $this->call('db:seed', ['--class' => 'Material']);
+        $this->call('db:seed', ['--class' => 'UserSeeder']);
 
         $this->info('Database successfully refreshed and seeded.');
     }
